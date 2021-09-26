@@ -42,7 +42,7 @@ def get_cpu_free():
     return threads_available
 
 def get_sync_directories():
-    with open(script_path + "directories.txt") as file:
+    with open(script_path + "/" + "directories.txt") as file:
         lines = file.readlines()
         lines_data = []
         for line in lines:
