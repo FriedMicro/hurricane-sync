@@ -1,0 +1,1 @@
+/usr/local/bin/zilla -enter gdrive driverun
