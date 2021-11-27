@@ -12,7 +12,7 @@ class GenericObj(object):
 def generic_command(command):
     print("Running generic system call")
 
-def rysnc_contents(source, config, compression):
+def rysnc_contents(source, config, mode):
     exclusions = config.short_exclusions
     destination = source.replace(config.source, config.destination)
     last_char_index = len(source) - 1
@@ -25,8 +25,10 @@ def rysnc_contents(source, config, compression):
         for exclusion in exclusions:
             exclusion_string += ("--exclude=" + exclusion + " ")
         print("Only excluding at root of: " + config.source)
-    if compression == True:
+    if mode == "net":
         rsync_command = "/usr/bin/sshpass -p 'password' /usr/bin/rsync --port=873 -avzz --delete " + exclusion_string + "'" + source + "/'" + " " + "'" + destination + "'"
+    elif mode == "checksum":
+        rsync_command = "/usr/bin/sshpass -p 'password' /usr/bin/rsync --port=873 -avzzc --delete " + exclusion_string + "'" + source + "/'" + " " + "'" + destination + "'"
     else:
         rsync_command = "/usr/bin/rsync -avW --no-recursive --dirs --inplace --delete " + exclusion_string + "'" + source + "/'" + " " + "'" + destination + "'"
     print(rsync_command)
@@ -109,10 +111,7 @@ def dispatch_rsync(directory, config):
             if thread.is_alive() != True:
                 active_threads.remove(index)
                 ++available_threads
-    if config.location == "net":
-        x = threading.Thread(target=rysnc_contents, args=(directory, config, True,))
-    else:
-        x = threading.Thread(target=rysnc_contents, args=(directory, config, False,))
+    x = threading.Thread(target=rysnc_contents, args=(directory, config, config.location,))
     x.start()
     --available_threads
     active_threads.append(x)
