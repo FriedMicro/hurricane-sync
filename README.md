@@ -2,7 +2,7 @@
 
 There are two scripts automatically run called setup.sh and teardown.sh which can be used for related backup tasks.
 
-The directories listed are an example, but the pattern is source:::destination:::type(local or net). Lines below these entires without the ::: are treated as folders to exclude.
+The directories listed are an example, but the pattern is source:::destination:::type(local, net, checksum). Lines below these entires without the ::: are treated as folders to exclude.
 
 Local is intended for physically connected disks while net is intended for networked solutions like offsite servers or local NAS backups. It works on a Linux\Unix host.
 
