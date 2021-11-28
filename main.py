@@ -94,7 +94,7 @@ def traverse_directories_top(config):
     top_level_directories = get_top_level_directories(source)
     root_thread.join()
     networked_options = ["net", "checksum"]
-    if config.location in networked_options:
+    if not config.location in networked_options:
         for child in top_level_directories:
             if skip_exclusion(child, config) == False:
                 print(child + " " + str(config.exclusions))

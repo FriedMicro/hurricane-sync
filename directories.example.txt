@@ -1,3 +1,5 @@
+Rename this file to directories.txt and delete this line after filling in what you want backend up to where
+
 /home/friedmicro/:::/mnt/data/snapshot/home:::local
 /.cache
 /.local/share/Steam
