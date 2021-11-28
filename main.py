@@ -12,6 +12,11 @@ class GenericObj(object):
 def generic_command(command):
     print("Running generic system call")
 
+def get_password():
+    with open(script_path + "/" + "password.txt") as f:
+        password = f.readline().rstrip()
+    return password
+
 def rysnc_contents(source, config, mode):
     exclusions = config.short_exclusions
     destination = source.replace(config.source, config.destination)
@@ -25,10 +30,11 @@ def rysnc_contents(source, config, mode):
         for exclusion in exclusions:
             exclusion_string += ("--exclude=" + exclusion + " ")
         print("Only excluding at root of: " + config.source)
+    password = get_password()
     if mode == "net":
-        rsync_command = "/usr/bin/sshpass -p 'password' /usr/bin/rsync --port=873 -avzz --delete " + exclusion_string + "'" + source + "/'" + " " + "'" + destination + "'"
+        rsync_command = "/usr/bin/sshpass -p '" + password + "' /usr/bin/rsync --port=873 -avzz --delete " + exclusion_string + "'" + source + "/'" + " " + "'" + destination + "'"
     elif mode == "checksum":
-        rsync_command = "/usr/bin/sshpass -p 'password' /usr/bin/rsync --port=873 -avzzc --delete " + exclusion_string + "'" + source + "/'" + " " + "'" + destination + "'"
+        rsync_command = "/usr/bin/sshpass -p '" + password + "' /usr/bin/rsync --port=873 -avzzc --delete " + exclusion_string + "'" + source + "/'" + " " + "'" + destination + "'"
     else:
         rsync_command = "/usr/bin/rsync -avW --no-recursive --dirs --inplace --delete " + exclusion_string + "'" + source + "/'" + " " + "'" + destination + "'"
     print(rsync_command)
@@ -87,7 +93,8 @@ def traverse_directories_top(config):
     root_thread = dispatch_rsync(source, config)
     top_level_directories = get_top_level_directories(source)
     root_thread.join()
-    if config.location != "net":
+    networked_options = ["net", "checksum"]
+    if config.location in networked_options:
         for child in top_level_directories:
             if skip_exclusion(child, config) == False:
                 print(child + " " + str(config.exclusions))
