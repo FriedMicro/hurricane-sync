@@ -32,7 +32,7 @@ def rysnc_contents(source, config, mode):
         print("Only excluding at root of: " + config.source)
     password = get_password()
     if mode == "net":
-        rsync_command = "/usr/bin/sshpass -p '" + password + "' /usr/bin/rsync --port=873 -avzz --delete " + exclusion_string + "'" + source + "/'" + " " + "'" + destination + "'"
+        rsync_command = "/usr/bin/sshpass -p '" + password + "' /usr/bin/rsync --port=873 -av --delete " + exclusion_string + "'" + source + "/'" + " " + "'" + destination + "'"
     elif mode == "checksum":
         rsync_command = "/usr/bin/sshpass -p '" + password + "' /usr/bin/rsync --port=873 -avzzc --delete " + exclusion_string + "'" + source + "/'" + " " + "'" + destination + "'"
     else:
